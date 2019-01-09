@@ -9,6 +9,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Parse JSON data in request bodies.
 app.use(bodyParser.json());
 
+// Link routes.
+const orderRoutes = require('./routes/orders');
+app.use('/orders', orderRoutes);
+
 // Start server -------------------------------------------------
 const port = 8080;
 app.listen(8080);
