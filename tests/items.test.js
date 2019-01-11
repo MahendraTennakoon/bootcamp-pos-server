@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../app/routes/index');
 
-test('orders route', async () => {
+test('items route', async () => {
     const orders = [
         {
             "id": "0001",
@@ -29,7 +29,7 @@ test('orders route', async () => {
             "price": 360
         }
     ];
-    const response = await request(app).get('/orders');
+    const response = await request(app).get('/items');
     expect(response).toBeDefined();
     expect(response.body).toEqual(orders);
-})
+});

@@ -1,5 +1,5 @@
 const app = require('express')();
 
-app.use('/orders', require('./orders'));
+app.use('/items', require('./items'));
 
 module.exports = app;
