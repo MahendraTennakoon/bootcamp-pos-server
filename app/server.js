@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config/config.json');
 // For parsing incoming request bodies.
 const bodyParser = require('body-parser');
 
@@ -14,6 +15,5 @@ const routes = require('./routes');
 app.use(routes);
 
 // Start server -------------------------------------------------
-const port = 8080;
-app.listen(8080);
-console.log(`pos-server listening on port ${port}.`);
+app.listen(config.port);
+console.log(`pos-server listening on port ${config.port}.`);
