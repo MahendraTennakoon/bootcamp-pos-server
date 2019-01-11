@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 const routes = require('./routes');
 app.use(routes);
 
+module.exports = app;
+
 // Start server -------------------------------------------------
 app.listen(config.port);
 console.log(`pos-server listening on port ${config.port}.`);
