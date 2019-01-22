@@ -2,35 +2,35 @@ const request = require('supertest');
 const app = require('../app/routes/index');
 
 test('items route', async () => {
-    const orders = [
+    const items = [
         {
-            "id": "0001",
+            "id": 1,
             "name": "Classic Burger",
             "price": 450
         },
         {
-            "id": "0002",
+            "id": 2,
             "name": "Backpackers Burger",
             "price": 725
         },
         {
-            "id": "0003",
+            "id": 3,
             "name": "Bistro Burger",
             "price": 250
         },
         {
-            "id": "0004",
+            "id": 4,
             "name": "Chicken Burger",
             "price": 300
         },
         {
-            "id": "0005",
+            "id": 5,
             "name": "BBQ Burger",
             "price": 360
         }
     ];
     const response = await request(app).get('/items');
     expect(response).toBeDefined();
-    expect(response.body).toEqual(orders);
+    expect(response.body).toEqual(items);
 });
 

@@ -1,17 +1,14 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../../config/sequelize');
 
-const Item = sequelize.define('item', {
-    id: {
+const Order = sequelize.define('order', {
+    order_id: {
         type: Sequelize.INTEGER,
         primaryKey: true
     },
-    name: {
-        type: Sequelize.STRING
-    },
-    price: {
-        type: Sequelize.NUMERIC
+    created_date: {
+        type: Sequelize.DATE
     }
 });
 
-module.exports = Item;
+module.exports = Order;
