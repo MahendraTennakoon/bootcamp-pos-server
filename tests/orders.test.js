@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app/server');
+const app = require('../app/routes/index');
 
 /**
  * Delete all orders in orders table.
