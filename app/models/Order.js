@@ -7,7 +7,7 @@ const Order = sequelize.define('order', {
         primaryKey: true
     },
     created_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     }
 });
 

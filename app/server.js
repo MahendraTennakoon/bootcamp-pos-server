@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Allow rich content (arrays/objects) in url encoded data.
-app.use(bodyParser.urlencoded({ extended: true }));
 // Parse JSON data in request bodies.
 app.use(bodyParser.json());
+// Allow rich content (arrays/objects) in url encoded data.
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Load routes.
 const routes = require('./routes');

@@ -11,6 +11,13 @@ router.route('/')
             res.json(orders);
         })
         .catch(next);
+    })
+    .post((req, res, next) => {
+        Order.create(req.body)
+        .then(order => {
+            res.json(order)
+        })
+        .catch(next);
     });
 
 router.route('/:order_id')

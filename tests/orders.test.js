@@ -1,5 +1,25 @@
 const request = require('supertest');
-const app = require('../app/routes/index');
+const app = require('../app/server');
+
+/**
+ * Delete all orders in orders table.
+ */
+const clearOrders = () => {
+    
+};
+
+// test('Create order route', async () => {
+//     const order = {
+//         created_date: "2019-01-23"
+//     };
+
+//     const response = await request(app)
+//         .post('/orders')
+//         .send(order)
+//         .set('Accept', 'application/json')
+    
+//     expect(response).toBeDefined();
+// });
 
 test('orders route', async () => {
     const orders = [
