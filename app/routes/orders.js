@@ -6,14 +6,15 @@ const sequelize = require('../../config/sequelize');
 const Order = require('../models/Order');
 
 router.route('/')
-    .get((req, res) => {
+    .get((req, res, next) => {
         Order.findAll().then(orders => {
             res.json(orders);
         })
+        .catch(next);
     });
 
 router.route('/:order_id')
-    .get((req, res) => {
+    .get((req, res, next) => {
         const order_id = req.params.order_id;
 
         const query = `SELECT i.id, i.name, i.price, od.quantity
@@ -23,7 +24,8 @@ router.route('/:order_id')
         sequelize.query(query, { raw: true, type: Sequelize.QueryTypes.SELECT })
             .then((order_details) => {
                 res.json(order_details);
-            });
+            })
+            .catch(next);
     });
 
 module.exports = router;
