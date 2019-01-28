@@ -17,7 +17,4 @@ const OrderDetail = sequelize.define('order_details', {
     }
 });
 
-OrderDetail.hasMany(Order, {foreignKey: 'order_id', sourceKey: 'order_id'});
-OrderDetail.hasMany(Item, {foreignKey: 'item_id', sourceKey: 'id'});
-
 module.exports = OrderDetail;

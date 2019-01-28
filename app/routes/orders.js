@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../../config/sequelize');
 
 const Order = require('../models/Order');
+const OrderDetail = require('../models/OrderDetail');
 
 router.route('/')
     .get((req, res, next) => {
@@ -33,6 +34,26 @@ router.route('/:order_id')
                 res.json(order_details);
             })
             .catch(next);
+    })
+    .put((req, res, next) => {
+        const order_id = parseInt(req.params.order_id);
+
+        const payload = req.body.map((data) => {
+            return {
+                order_id: order_id,
+                item_id: data.id,
+                quantity: data.quantity
+            }
+        });
+
+        OrderDetail.bulkCreate(payload, {
+            fields: ["order_id", "item_id", "quantity"],
+            updateOnDuplicate: ["quantity"]
+        })
+        .then((result) => {
+            res.json(result);
+        })
+        .catch(next);
     });
 
 module.exports = router;
