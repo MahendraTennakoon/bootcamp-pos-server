@@ -11,14 +11,14 @@ router.route('/')
         Order.findAll().then(orders => {
             res.json(orders);
         })
-        .catch(next);
+            .catch(next);
     })
     .post((req, res, next) => {
         Order.create(req.body)
-        .then(order => {
-            res.json(order)
-        })
-        .catch(next);
+            .then(order => {
+                res.json(order)
+            })
+            .catch(next);
     });
 
 router.route('/:order_id')
@@ -49,6 +49,24 @@ router.route('/:order_id')
         OrderDetail.bulkCreate(payload, {
             fields: ["order_id", "item_id", "quantity"],
             updateOnDuplicate: ["quantity"]
+        })
+        .then((result) => {
+            res.json(result);
+        })
+        .catch(next);
+    });
+
+
+router.route('/:order_id/:item_id')
+    .delete((req, res, next) => {
+        const order_id = parseInt(req.params.order_id);
+        const item_id = parseInt(req.params.item_id);
+
+        OrderDetail.destroy({
+            where: {
+                order_id: order_id,
+                item_id: item_id
+            }
         })
         .then((result) => {
             res.json(result);
