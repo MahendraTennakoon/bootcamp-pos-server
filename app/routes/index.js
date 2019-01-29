@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/items', require('./items'));
 app.use('/users', require('./users'));
-app.use('/orders', require('./orders'))
+app.use('/orders', require('./orders'));
+app.use('/sessions', require('./sessions'));
 
 module.exports = app;
