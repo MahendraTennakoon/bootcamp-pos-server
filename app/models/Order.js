@@ -3,6 +3,7 @@ const sequelize = require('../../config/sequelize');
 
 const Order = sequelize.define('order', {
     order_id: {
+        autoIncrement: true,
         type: Sequelize.INTEGER,
         primaryKey: true
     },
