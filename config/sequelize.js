@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('bootcamp_pos', 'john_doe', '1qaz2wsx', {
+const config = require('./config.json');
+
+const sequelize = new Sequelize(config.database, 'john_doe', '1qaz2wsx', {
     host: 'localhost',
     dialect: 'mysql',
     operatorsAliases: false,
