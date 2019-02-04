@@ -30,7 +30,15 @@ const populateOrders = () => {
     return Order.bulkCreate(orders)
 };
 
-describe('all orders can be retrieved', () => {
+afterAll(() => {
+    return clearOrderDetails()
+        .then(() => clearOrders())
+        .catch(error => {
+            console.log(error);
+        })
+});
+
+describe('/orders', () => {
     beforeEach(() => {
         return clearOrderDetails()
             .then(() => clearOrders())
@@ -79,6 +87,37 @@ describe('all orders can be retrieved', () => {
     });
 });
 
+test('PUT /orders/:order_id', async () => {
+    const order = {
+        created_date: "2019-01-23"
+    };
+
+    const itemsPayload = [
+        {
+            "id": 2,
+            "name": "Backpackers Burger",
+            "price": 725,
+            "quantity": 58,
+            "isEditing": true
+        }
+    ];
+
+    const response_post = await request(app)
+        .post('/orders')
+        .send(order)
+        .set('Accept', 'application/json')
+
+    const order_id = response_post.body.order_id;
+
+    const response = await request(app)
+        .put(`/orders/${order_id}`)
+        .send(itemsPayload)
+        .set('Accept', 'application/json')
+
+    expect(response).toBeDefined();
+    expect(response.body[0].item_id).toEqual(itemsPayload[0].id);
+    expect(response.body[0].quantity).toEqual(itemsPayload[0].quantity);
+});
 
 
 // test('orders/:order_id route', async () => {
