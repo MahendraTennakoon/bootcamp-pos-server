@@ -192,3 +192,55 @@ describe('/orders/:order_id', () => {
         expect(response.body).toEqual(itemsPayload);
     });
 });
+
+describe('/orders/:order_id/:item_id', () => {
+    beforeAll(() => {
+        return clearOrders()
+            .then(() => clearOrderDetails())
+            .then(() => clearItems())
+            .then(() => populateItems())
+            // .then(() => populateOrders())
+            .catch((error) => {
+                console.log(error);
+            });
+    });
+    test('DELETE /:order_id/:item_id', async () => {
+        const order = {
+            created_date: "2019-01-23"
+        };
+
+        const itemsPayload = [
+            {
+                "id": 2,
+                "name": "Backpackers Burger",
+                "price": 725,
+                "quantity": 58,
+            }
+        ];
+
+        const response_post = await request(app)
+            .post('/orders')
+            .send(order)
+            .set('Accept', 'application/json')
+
+        const order_id = response_post.body.order_id;
+
+        await request(app)
+            .put(`/orders/${order_id}`)
+            .send(itemsPayload)
+            .set('Accept', 'application/json')
+
+        const response_delete = await request(app)
+            .delete(`/orders/${order_id}/${itemsPayload[0].id}`)
+            .set('Accept', 'application/json')
+
+        expect(response_delete).toBeDefined();
+
+        const response_get = await request(app)
+            .get(`/orders/${order_id}`)
+            .set('Accept', 'application/json')
+
+        expect(response_get.body).toBeDefined();
+        expect(response_get.body.length).toBe(0);
+    });
+});
