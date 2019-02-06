@@ -2,7 +2,9 @@ const request = require('supertest');
 const app = require('../app/routes/index');
 const Order = require('../app/models/Order');
 const OrderDetails = require('../app/models/OrderDetail');
+const Item = require('../app/models/Item');
 const orders = require('./migrations/orders.json');
+const items = require('./migrations/items.json');
 
 /**
  * Order table is referenced in a foreign key in OrderDetails table.
@@ -29,6 +31,23 @@ const clearOrders = () => {
 const populateOrders = () => {
     return Order.bulkCreate(orders)
 };
+
+/**
+ * Delete all items in item table.
+ */
+const clearItems = () => {
+    return Item.destroy({
+        where: {}
+    })
+};
+
+/**
+ * Populate item table.
+ */
+const populateItems = () => {
+    return Item.bulkCreate(items)
+};
+
 
 afterAll(() => {
     return clearOrderDetails()
@@ -87,37 +106,93 @@ describe('/orders', () => {
     });
 });
 
-test('PUT /orders/:order_id', async () => {
-    const order = {
-        created_date: "2019-01-23"
-    };
+describe('/orders/:order_id', () => {
+    beforeEach(() => {
+        return clearOrderDetails()
+            .then(() => clearOrders())
+            .then(() => clearItems())
+            .then(() => populateItems())
+            .catch(error => {
+                console.log(error);
+            })
+    });
 
-    const itemsPayload = [
-        {
-            "id": 2,
-            "name": "Backpackers Burger",
-            "price": 725,
-            "quantity": 58,
-            "isEditing": true
-        }
-    ];
+    afterAll(() => {
+        return clearOrderDetails()
+            .then(() => clearOrders())
+            .then(() => clearItems())
+            .catch(error => {
+                console.log(error);
+            })
+    });
 
-    const response_post = await request(app)
-        .post('/orders')
-        .send(order)
-        .set('Accept', 'application/json')
+    test('PUT /orders/:order_id', async () => {
+        const order = {
+            created_date: "2019-01-23"
+        };
 
-    const order_id = response_post.body.order_id;
+        const itemsPayload = [
+            {
+                "id": 2,
+                "name": "Backpackers Burger",
+                "price": 725,
+                "quantity": 58,
+                "isEditing": true
+            }
+        ];
 
-    const response = await request(app)
-        .put(`/orders/${order_id}`)
-        .send(itemsPayload)
-        .set('Accept', 'application/json')
+        const response_post = await request(app)
+            .post('/orders')
+            .send(order)
+            .set('Accept', 'application/json')
 
-    expect(response).toBeDefined();
-    expect(response.body[0].item_id).toEqual(itemsPayload[0].id);
-    expect(response.body[0].quantity).toEqual(itemsPayload[0].quantity);
+        const order_id = response_post.body.order_id;
+
+        const response = await request(app)
+            .put(`/orders/${order_id}`)
+            .send(itemsPayload)
+            .set('Accept', 'application/json')
+
+        expect(response).toBeDefined();
+        expect(response.body[0].item_id).toEqual(itemsPayload[0].id);
+        expect(response.body[0].quantity).toEqual(itemsPayload[0].quantity);
+    });
+
+    test('GET /orders/:order_id', async () => {
+        const order = {
+            created_date: "2019-01-23"
+        };
+
+        const itemsPayload = [
+            {
+                "id": 2,
+                "name": "Backpackers Burger",
+                "price": 725,
+                "quantity": 58,
+            }
+        ];
+
+        const response_post = await request(app)
+            .post('/orders')
+            .send(order)
+            .set('Accept', 'application/json')
+
+        const order_id = response_post.body.order_id;
+
+        await request(app)
+            .put(`/orders/${order_id}`)
+            .send(itemsPayload)
+            .set('Accept', 'application/json')
+
+        const response = await request(app)
+            .get(`/orders/${order_id}`)
+            .set('Accept', 'application/json')
+
+        expect(response).toBeDefined();
+        expect(response.body).toEqual(itemsPayload);
+    });
 });
+
 
 
 // test('orders/:order_id route', async () => {
