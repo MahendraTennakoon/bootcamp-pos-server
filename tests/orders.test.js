@@ -192,26 +192,3 @@ describe('/orders/:order_id', () => {
         expect(response.body).toEqual(itemsPayload);
     });
 });
-
-
-
-// test('orders/:order_id route', async () => {
-//     const order = [
-//         {
-//             "id": 1,
-//             "name": "Classic Burger",
-//             "price": 450,
-//             "quantity": 12
-//         },
-//         {
-//             "id": 2,
-//             "name": "Backpackers Burger",
-//             "price": 725,
-//             "quantity": 21
-//         }
-//     ];
-
-//     const response = await request(app).get('/orders/1');
-//     expect(response).toBeDefined();
-//     expect(response.body).toEqual(order);
-// });
